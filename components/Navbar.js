@@ -14,7 +14,7 @@ import { ModeToggle } from './Theme-btn'
 
 const Navbar = () => {
     return (
-        <nav className="p-4 bg-background/50 flex sticky top-0 backdrop-blur border-b">
+        <nav className="p-4 bg-background/50 flex sticky top-0 backdrop-blur border-b z-10">
             <div className="container mx-auto flex justify-between pb-1 items-center pl-2">
                 <div className="text-2xl font-bold">
                     <Link href="/">VivekBlog</Link>
