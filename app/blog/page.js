@@ -1,4 +1,7 @@
+'use client'
 import React from 'react'
+import { buttonVariants } from "@/components/ui/button"
+import Link from 'next/link'
 
 const blog_page = () => {
     const blogs = [
@@ -8,7 +11,7 @@ const blog_page = () => {
             slug: 'first-blog-post',
             date: '2024-09-15',
             author: 'John Doe',
-            image: '/images/first.jpg',
+            image: '/first.jpg',
         },
         {
             title: 'Second Blog Post',
@@ -16,7 +19,15 @@ const blog_page = () => {
             slug: 'second-blog-post',
             date: '2024-09-14',
             author: 'Jane Smith',
-            image: '/images/second.jpg',
+            image: '/second.jpg',
+        },
+        {
+            title: 'Third Blog Post',
+            description: 'This is a brief description of the second blog post.',
+            slug: 'third-blog-post',
+            date: '2024-09-14',
+            author: 'Vivek Raj',
+            image: '/third.jpg',
         },
     ];
     return (
@@ -28,16 +39,31 @@ const blog_page = () => {
                 </div>
                 <div className="flex flex-wrap justify-center items-stretch space-x-4">
                     {blogs.map((blog, index) => (
-                        <div key={index} className="w-full max-w-sm mx-4 my-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transform transition-transform duration-300 hover:scale-105">
-                            <img
-                                src={blog.image}
-                                alt={blog.title}
-                                className="w-full h-48 rounded-lg object-cover"
-                            />
-                            <h3 className="mt-4 text-xl font-semibold text-gray-800 dark:text-gray-200">{blog.title}</h3>
-                            <p className="mt-2 text-gray-600 dark:text-gray-400">{blog.description}</p>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">By {blog.author} on {new Date(blog.date).toLocaleDateString()}</p>
-                            <a href={`/blog/${blog.slug}`} className="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline">Read More</a>
+                        <div
+                            key={index}
+                            className="w-full max-w-sm mx-4 my-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between transition-transform duration-300 hover:scale-105"
+                        >
+                            <div>
+                                <img
+                                    src={blog.image}
+                                    alt={blog.title}
+                                    className="w-full h-48 rounded-lg object-cover"
+                                />
+                                <h3 className="mt-4 text-xl font-semibold text-gray-800 dark:text-gray-200">
+                                    {blog.title}
+                                </h3>
+                                <p className="mt-2 text-gray-600 dark:text-gray-400">{blog.description}</p>
+                                <p className="mt-2 text-gray-500 dark:text-gray-400">
+                                    By {blog.author} on{' '}
+                                    {new Date(blog.date).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                    })}
+                                </p>
+                            </div>
+                            {/* Button placed at the bottom */}
+                            <Link href={`/blogpost/${blog.slug}`}className={`${buttonVariants({ variant: "outline" })} mt-4 w-fit cursor-pointer`}>Click here</Link>
                         </div>
                     ))}
                 </div>
