@@ -1,8 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 export default function BlogPostSlug({ params }) {
     const [blog, setblog] = useState({})
+    const [loading, setLoading] = useState(true)
 
     const fetchBlogPostData = (async () => {
         try {
@@ -18,16 +21,19 @@ export default function BlogPostSlug({ params }) {
             setblog(result.target_blog)
         } catch (error) {
             console.log(error.message)
+        }finally{
+            setLoading(false)
         }
     })
 
     useEffect(() => {
+        setLoading(true)
         fetchBlogPostData();
     }, [])
 
     return (
         <>
-            <div className="max-w-5xl mx-auto p-6">
+            {!loading && <div className="max-w-5xl mx-auto p-6">
                 <h1>{params.slug}</h1>
                 <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
                 <img
@@ -41,7 +47,17 @@ export default function BlogPostSlug({ params }) {
                 </blockquote>
                 {/* Render the HTML content */}
                 <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }}></div>
-            </div>
+            </div>}
+            {loading && <div className="max-w-5xl py-5 mx-auto rounded-full h-screen space-y-3">
+                <Skeleton className="w-full h-[50%]" />
+                <Skeleton className="w-[60%] h-[4%]" />
+                <Skeleton className="w-[80%] h-[3%]" />
+                <Skeleton className="w-[60%] h-[4%]" />
+                <Skeleton className="w-[90%] h-[5%]" />
+                <Skeleton className="w-[80%] h-[3%]" />
+                <Skeleton className="w-[80%] h-[3%]" />
+                <Skeleton className="w-[80%] h-[3%]" />
+            </div>}
         </>
     );
 }

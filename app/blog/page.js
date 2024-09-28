@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import { buttonVariants } from "@/components/ui/button"
 import Link from 'next/link'
+import Loaderskeleton from '@/components/loadingSkeleton/Loaderskeleton'
 
 const blog_page = () => {
     const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     // Fetching all blog data from the Database 
     const fetchData = (async () => {
@@ -19,10 +21,13 @@ const blog_page = () => {
             setBlogs(result.all_blogs);
         } catch (error) {
             console.error(error.message);
+        }finally{
+            setLoading(false);
         }
     })
 
     useEffect(() => {
+        setLoading(true);
         fetchData()
     }, [])
     return (
@@ -32,7 +37,7 @@ const blog_page = () => {
                     <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">Our Blogs</h2>
                     <p className="text-gray-600 dark:text-gray-400">Read our latest articles</p>
                 </div>
-                <div className="flex flex-wrap justify-center items-stretch space-x-4">
+                {!loading && <div className="flex flex-wrap justify-center items-stretch space-x-4">
                     {blogs.map((blog, index) => (
                         <div
                             key={index}
@@ -61,7 +66,24 @@ const blog_page = () => {
                             <Link href={`/blogpost/${blog.slug}`} className={`${buttonVariants({ variant: "outline" })} mt-4 w-fit cursor-pointer`}>Click here</Link>
                         </div>
                     ))}
-                </div>
+                </div>}
+                {loading && <div className="flex flex-wrap justify-center items-stretch space-x-4">
+                    <div>
+                        <Loaderskeleton />
+                        <Loaderskeleton />
+                        <Loaderskeleton />
+                    </div>
+                    <div>
+                        <Loaderskeleton />
+                        <Loaderskeleton />
+                        <Loaderskeleton />
+                    </div>
+                    <div>
+                        <Loaderskeleton />
+                        <Loaderskeleton />
+                        <Loaderskeleton />
+                    </div>
+                </div>}
             </div>
         </div>
     )
