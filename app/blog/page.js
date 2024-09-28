@@ -1,35 +1,30 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { buttonVariants } from "@/components/ui/button"
 import Link from 'next/link'
 
 const blog_page = () => {
-    const blogs = [
-        {
-            title: 'First Blog Post',
-            description: 'This is a brief description of the first blog post.',
-            slug: 'first-blog-post',
-            date: '2024-09-15',
-            author: 'John Doe',
-            image: '/first.jpg',
-        },
-        {
-            title: 'Second Blog Post',
-            description: 'This is a brief description of the second blog post.',
-            slug: 'second-blog-post',
-            date: '2024-09-14',
-            author: 'Jane Smith',
-            image: '/second.jpg',
-        },
-        {
-            title: 'Third Blog Post',
-            description: 'This is a brief description of the second blog post.',
-            slug: 'third-blog-post',
-            date: '2024-09-14',
-            author: 'Vivek Raj',
-            image: '/third.jpg',
-        },
-    ];
+    const [blogs, setBlogs] = useState([]);
+
+    // Fetching all blog data from the Database 
+    const fetchData = (async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/backend/getblogAPI`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            const result = await response.json();
+            setBlogs(result.all_blogs);
+        } catch (error) {
+            console.error(error.message);
+        }
+    })
+
+    useEffect(() => {
+        fetchData()
+    }, [])
     return (
         <div className="bg-gray-100 dark:bg-gray-900 py-12">
             <div className="container mx-auto px-4">
@@ -63,7 +58,7 @@ const blog_page = () => {
                                 </p>
                             </div>
                             {/* Button placed at the bottom */}
-                            <Link href={`/blogpost/${blog.slug}`}className={`${buttonVariants({ variant: "outline" })} mt-4 w-fit cursor-pointer`}>Click here</Link>
+                            <Link href={`/blogpost/${blog.slug}`} className={`${buttonVariants({ variant: "outline" })} mt-4 w-fit cursor-pointer`}>Click here</Link>
                         </div>
                     ))}
                 </div>

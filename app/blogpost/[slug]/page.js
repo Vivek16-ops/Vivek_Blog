@@ -1,14 +1,29 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 
 export default function BlogPostSlug({ params }) {
-    const blog = {
-        title: 'Sample Blog Post',
-        author: 'John Doe',
-        image: '/first.jpg',
-        description: 'This is a sample blog post description.',
-        date: '2024-09-15',
-        content: `<p>This is the <strong>HTML content</strong> of the blog post. It may contain <em>rich text</em>, images, or other HTML elements.</p>`,
-    };
+    const [blog, setblog] = useState({})
+
+    const fetchBlogPostData = (async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/backend/getSlugBlog`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ slug: params.slug })
+            });
+
+            const result = await response.json();
+            setblog(result.target_blog)
+        } catch (error) {
+            console.log(error.message)
+        }
+    })
+
+    useEffect(() => {
+        fetchBlogPostData();
+    }, [])
 
     return (
         <>
@@ -21,7 +36,9 @@ export default function BlogPostSlug({ params }) {
                     className="w-full h-auto mb-6 rounded-lg object-cover"
                 />
                 <p className="text-gray-500 mb-2">By {blog.author} on {new Date(blog.date).toLocaleDateString('en-GB')}</p>
-                <p className="text-lg text-gray-700 mb-6">{blog.description}</p>
+                <blockquote className="text-lg text-gray-700 mb-6 border-l-4 border-gray-300 pl-4">
+                    &quot;{blog.description}&quot;
+                </blockquote>
                 {/* Render the HTML content */}
                 <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }}></div>
             </div>
