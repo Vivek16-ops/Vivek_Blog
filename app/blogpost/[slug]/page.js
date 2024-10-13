@@ -7,6 +7,7 @@ export default function BlogPostSlug({ params }) {
     const [blog, setblog] = useState({})
     const [loading, setLoading] = useState(true)
 
+
     const fetchBlogPostData = (async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/backend/getSlugBlog`, {
@@ -21,7 +22,7 @@ export default function BlogPostSlug({ params }) {
             setblog(result.target_blog)
         } catch (error) {
             console.log(error.message)
-        }finally{
+        } finally {
             setLoading(false)
         }
     })
@@ -34,7 +35,6 @@ export default function BlogPostSlug({ params }) {
     return (
         <>
             {!loading && <div className="max-w-5xl mx-auto p-6">
-                <h1>{params.slug}</h1>
                 <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
                 <img
                     src={blog.image}
@@ -46,7 +46,7 @@ export default function BlogPostSlug({ params }) {
                     &quot;{blog.description}&quot;
                 </blockquote>
                 {/* Render the HTML content */}
-                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }}></div>
+                <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
             </div>}
             {loading && <div className="max-w-5xl py-5 mx-auto rounded-full h-screen space-y-3">
                 <Skeleton className="w-full h-[50%]" />
